@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-rich-black: 13 13 13;
+    --color-dark-gray: 26 26 26;
+    --color-lighter-gray: 45 45 45;
+    --color-neon-red: 255 23 68;
+  }
+
+  body {
+    @apply bg-gradient-to-b from-rich-black to-dark-gray text-white font-sans;
+    margin: 0;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold leading-tight;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl mb-4;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl mb-3;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl mb-3;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+}
+
+@layer components {
+  .container {
+    @apply px-4 md:px-8 mx-auto max-w-7xl;
+  }
+
+  .btn {
+    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-neon-red/50;
+  }
+
+  .btn-primary {
+    @apply btn bg-neon-red hover:bg-neon-red/90 text-white;
+  }
+
+  .btn-secondary {
+    @apply btn bg-lighter-gray hover:bg-lighter-gray/90 text-white;
+  }
+
+  .btn-outline {
+    @apply btn bg-transparent border-2 border-neon-red text-neon-red hover:bg-neon-red/10;
+  }
+
+  .glass-card {
+    @apply bg-lighter-gray/15 backdrop-blur-lg rounded-2xl border border-white/5 shadow-xl;
+  }
+
+  .feature-card {
+    @apply glass-card p-6 transition-all duration-300 hover:transform hover:scale-105 hover:shadow-neon-red/20 hover:border-neon-red/20;
+  }
+
+  .sidebar-link {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-white/80 hover:text-white hover:bg-white/5;
+  }
+
+  .sidebar-link.active {
+    @apply bg-neon-red/10 text-neon-red;
+  }
+
+  /* Animation classes */
+  .float {
+    @apply animate-float;
+  }
+  
+  .pulse {
+    @apply animate-pulse;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Accessibility focus styles */
+*:focus-visible {
+  @apply outline-none ring-2 ring-neon-red;
+}
