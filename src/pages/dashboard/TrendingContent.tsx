@@ -51,29 +51,62 @@ const TrendingContent = () => {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      {/* Header Section */}
+      <div className="flex flex-col space-y-6">
         <div>
           <h1 className="text-2xl font-bold mb-1">Trending Content</h1>
           <p className="text-white/60">Discover trending topics and content ideas</p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="relative flex-1 lg:flex-initial min-w-[200px]">
+        {/* Platform Selection */}
+        <div className="flex gap-4 overflow-x-auto pb-2">
+          <button
+            onClick={() => setSelectedPlatform('youtube')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+              selectedPlatform === 'youtube'
+                ? 'bg-red-500/20 text-red-500 border border-red-500/20'
+                : 'bg-lighter-gray/20 text-white/70 border border-white/10 hover:bg-lighter-gray/30'
+            }`}
+          >
+            <Youtube size={20} />
+            YouTube
+          </button>
+          <button
+            disabled
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-lighter-gray/20 text-white/30 border border-white/10 cursor-not-allowed"
+          >
+            <MessageSquare size={20} />
+            Twitter
+            <span className="text-xs">(Coming Soon)</span>
+          </button>
+          <button
+            disabled
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-lighter-gray/20 text-white/30 border border-white/10 cursor-not-allowed"
+          >
+            <Globe size={20} />
+            TikTok
+            <span className="text-xs">(Coming Soon)</span>
+          </button>
+        </div>
+
+        {/* Filters Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="relative">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search trends..."
-              className="w-full bg-lighter-gray/30 border border-white/10 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white"
+              className="w-full bg-lighter-gray/30 border border-white/10 rounded-lg pl-10 pr-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white"
             />
             <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60" />
           </div>
 
-          <div className="relative min-w-[160px]">
+          <div className="relative">
             <select
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
-              className="w-full appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
+              className="w-full appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
             >
               {COUNTRIES.map(country => (
                 <option key={country.code} value={country.code} className="bg-lighter-gray">
@@ -84,11 +117,11 @@ const TrendingContent = () => {
             <Globe size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 pointer-events-none" />
           </div>
 
-          <div className="relative min-w-[160px]">
+          <div className="relative">
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
+              className="w-full appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
             >
               {YOUTUBE_CATEGORIES.map(category => (
                 <option key={category.id} value={category.id} className="bg-lighter-gray">
@@ -99,11 +132,11 @@ const TrendingContent = () => {
             <Filter size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 pointer-events-none" />
           </div>
 
-          <div className="relative min-w-[160px]">
+          <div className="relative">
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
+              className="w-full appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
             >
               {SORT_OPTIONS.map(option => (
                 <option key={option.id} value={option.id} className="bg-lighter-gray">
@@ -116,6 +149,7 @@ const TrendingContent = () => {
         </div>
       </div>
 
+      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <motion.div 
           className="glass-card p-5 rounded-xl border border-white/10"
@@ -163,36 +197,7 @@ const TrendingContent = () => {
         </motion.div>
       </div>
 
-      <div className="flex gap-4 overflow-x-auto pb-2">
-        <button
-          onClick={() => setSelectedPlatform('youtube')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-            selectedPlatform === 'youtube'
-              ? 'bg-red-500/20 text-red-500 border border-red-500/20'
-              : 'bg-lighter-gray/20 text-white/70 border border-white/10 hover:bg-lighter-gray/30'
-          }`}
-        >
-          <Youtube size={20} />
-          YouTube
-        </button>
-        <button
-          disabled
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-lighter-gray/20 text-white/30 border border-white/10 cursor-not-allowed"
-        >
-          <MessageSquare size={20} />
-          Twitter
-          <span className="text-xs">(Coming Soon)</span>
-        </button>
-        <button
-          disabled
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-lighter-gray/20 text-white/30 border border-white/10 cursor-not-allowed"
-        >
-          <Globe size={20} />
-          TikTok
-          <span className="text-xs">(Coming Soon)</span>
-        </button>
-      </div>
-
+      {/* Content Section */}
       {error ? (
         <div className="glass-card p-8 rounded-xl text-center">
           <p className="text-red-500 mb-4">{error}</p>
