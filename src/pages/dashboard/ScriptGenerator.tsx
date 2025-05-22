@@ -126,11 +126,23 @@ const ScriptGenerator = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate script');
+        throw new Error(`Failed to generate script: ${response.statusText}`);
       }
 
-      const data = await response.json();
-      setGeneratedScript(data.script || data.message || JSON.stringify(data));
+      // Check content type to determine how to handle the response
+      const contentType = response.headers.get('content-type');
+      let scriptContent;
+
+      if (contentType && contentType.includes('application/json')) {
+        // Handle JSON response
+        const data = await response.json();
+        scriptContent = data.script || data.message || JSON.stringify(data);
+      } else {
+        // Handle text response
+        scriptContent = await response.text();
+      }
+
+      setGeneratedScript(scriptContent);
     } catch (error: any) {
       console.error('Error generating script:', error);
       setPublishError(error.message || 'Failed to generate script. Please try again.');
