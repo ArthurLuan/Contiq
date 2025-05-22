@@ -54,7 +54,7 @@ const TrendingContent = () => {
       {/* Header Section */}
       <div className="flex flex-col space-y-6">
         <div>
-          <h1 className="text-2xl font-bold mb-1">Trending Content</h1>
+          <h1 className="text-3xl font-bold mb-2">Trending Content</h1>
           <p className="text-white/60">Discover trending topics and content ideas</p>
         </div>
 
@@ -109,7 +109,7 @@ const TrendingContent = () => {
               className="w-full appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
             >
               {COUNTRIES.map(country => (
-                <option key={country.code} value={country.code} className="bg-lighter-gray">
+                <option key={country.code} value={country.code} className="bg-rich-black text-white py-2 hover:bg-lighter-gray/50">
                   {country.name}
                 </option>
               ))}
@@ -124,7 +124,7 @@ const TrendingContent = () => {
               className="w-full appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
             >
               {YOUTUBE_CATEGORIES.map(category => (
-                <option key={category.id} value={category.id} className="bg-lighter-gray">
+                <option key={category.id} value={category.id} className="bg-rich-black text-white py-2 hover:bg-lighter-gray/50">
                   {category.name}
                 </option>
               ))}
@@ -139,7 +139,7 @@ const TrendingContent = () => {
               className="w-full appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2.5 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
             >
               {SORT_OPTIONS.map(option => (
-                <option key={option.id} value={option.id} className="bg-lighter-gray">
+                <option key={option.id} value={option.id} className="bg-rich-black text-white py-2 hover:bg-lighter-gray/50">
                   {option.name}
                 </option>
               ))}
@@ -160,10 +160,10 @@ const TrendingContent = () => {
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-white/70 text-sm">Total Views</h3>
             <div className="w-8 h-8 rounded-md bg-blue-500/20 flex items-center justify-center">
-              <Eye size={16} className="text-white" />
+              <Eye size={16} className="text-blue-500" />
             </div>
           </div>
-          <div className="text-2xl font-bold">{formatNumber(stats.views.toString())}</div>
+          <div className="text-2xl font-bold text-blue-500">{formatNumber(stats.views.toString())}</div>
         </motion.div>
 
         <motion.div 
@@ -174,11 +174,11 @@ const TrendingContent = () => {
         >
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-white/70 text-sm">Total Comments</h3>
-            <div className="w-8 h-8 rounded-md bg-purple-500/20 flex items-center justify-center">
-              <MessageSquare size={16} className="text-white" />
+            <div className="w-8 h-8 rounded-md bg-blue-500/20 flex items-center justify-center">
+              <MessageSquare size={16} className="text-blue-500" />
             </div>
           </div>
-          <div className="text-2xl font-bold">{formatNumber(stats.comments.toString())}</div>
+          <div className="text-2xl font-bold text-blue-500">{formatNumber(stats.comments.toString())}</div>
         </motion.div>
 
         <motion.div 
@@ -189,11 +189,11 @@ const TrendingContent = () => {
         >
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-white/70 text-sm">Total Likes</h3>
-            <div className="w-8 h-8 rounded-md bg-green-500/20 flex items-center justify-center">
-              <ThumbsUp size={16} className="text-white" />
+            <div className="w-8 h-8 rounded-md bg-blue-500/20 flex items-center justify-center">
+              <ThumbsUp size={16} className="text-blue-500" />
             </div>
           </div>
-          <div className="text-2xl font-bold">{formatNumber(stats.likes.toString())}</div>
+          <div className="text-2xl font-bold text-blue-500">{formatNumber(stats.likes.toString())}</div>
         </motion.div>
       </div>
 
@@ -238,26 +238,26 @@ const TrendingContent = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
                 <div className="p-4">
-                  <h3 className="text-sm font-medium mb-2 line-clamp-2 group-hover:text-neon-red transition-colors">
+                  <h3 className="text-lg font-medium mb-2 line-clamp-2 group-hover:text-neon-red transition-colors">
                     {video.title}
                   </h3>
                   <p className="text-white/60 text-sm mb-4">{video.channelTitle}</p>
                   <div className="flex items-center justify-between text-sm text-white/60">
                     <div className="flex items-center gap-3">
                       <span className="flex items-center gap-1">
-                        <Eye size={14} />
+                        <Eye size={14} className="text-blue-500" />
                         {formatNumber(video.viewCount)}
                       </span>
                       <span className="flex items-center gap-1">
-                        <ThumbsUp size={14} />
+                        <ThumbsUp size={14} className="text-blue-500" />
                         {formatNumber(video.likeCount)}
                       </span>
                       <span className="flex items-center gap-1">
-                        <MessageSquare size={14} />
+                        <MessageSquare size={14} className="text-blue-500" />
                         {formatNumber(video.commentCount)}
                       </span>
                     </div>
-                    <span>{formatDate(video.publishedAt)}</span>
+                    <span className="text-blue-500">{formatDate(video.publishedAt)}</span>
                   </div>
                 </div>
               </a>
