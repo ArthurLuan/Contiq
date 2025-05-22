@@ -105,6 +105,7 @@ const ScriptGenerator = () => {
     }
 
     setIsGenerating(true);
+    setPublishError('');
 
     try {
       const payload = {
@@ -116,22 +117,25 @@ const ScriptGenerator = () => {
         references: exampleInputs
       };
 
-      const response = await fetch('https://n8n-fc4c0o0swcokkww040kcswoc.erickto.dev/webhook-test/90937f5c-cdd2-4e0a-b41f-3d09cd9ff642', {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-script`, {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate script');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate script');
       }
 
-      const data = await response.text();
-      setGeneratedScript(data);
-    } catch (error) {
+      const data = await response.json();
+      setGeneratedScript(data.script);
+    } catch (error: any) {
       console.error('Error generating script:', error);
+      setPublishError(error.message || 'Failed to generate script. Please try again.');
     } finally {
       setIsGenerating(false);
     }
@@ -424,7 +428,10 @@ const ScriptGenerator = () => {
                   </span>
                 )}
                 {publishError && (
-                  <span className="text-red-500 text-sm">{publishError}</span>
+                  <span className="text-red-500 text-sm flex items-center gap-1">
+                    <AlertCircle size={16} />
+                    {publishError}
+                  </span>
                 )}
                 <button
                   onClick={handlePublishScript}
