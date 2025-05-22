@@ -244,7 +244,7 @@ const TrendingContent = () => {
                   <p className="text-white/60 text-sm mb-4">{video.channelTitle}</p>
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between text-sm">
-                      <div className="text-red-500">{formatDate(video.publishedAt)}</div>
+                      <div className="text-blue-500">{formatDate(video.publishedAt)}</div>
                     </div>
                     <div className="flex items-center gap-4 text-sm text-white/60">
                       <span className="flex items-center gap-1">
