@@ -159,11 +159,11 @@ const TrendingContent = () => {
         >
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-white/70 text-sm">Total Views</h3>
-            <div className="w-8 h-8 rounded-md bg-blue-500/20 flex items-center justify-center">
-              <Eye size={16} className="text-blue-500" />
+            <div className="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center">
+              <Eye size={16} className="text-white" />
             </div>
           </div>
-          <div className="text-2xl font-bold text-blue-500">{formatNumber(stats.views.toString())}</div>
+          <div className="text-2xl font-bold text-white">{formatNumber(stats.views.toString())}</div>
         </motion.div>
 
         <motion.div 
@@ -174,11 +174,11 @@ const TrendingContent = () => {
         >
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-white/70 text-sm">Total Comments</h3>
-            <div className="w-8 h-8 rounded-md bg-blue-500/20 flex items-center justify-center">
-              <MessageSquare size={16} className="text-blue-500" />
+            <div className="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center">
+              <MessageSquare size={16} className="text-white" />
             </div>
           </div>
-          <div className="text-2xl font-bold text-blue-500">{formatNumber(stats.comments.toString())}</div>
+          <div className="text-2xl font-bold text-white">{formatNumber(stats.comments.toString())}</div>
         </motion.div>
 
         <motion.div 
@@ -189,11 +189,11 @@ const TrendingContent = () => {
         >
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-white/70 text-sm">Total Likes</h3>
-            <div className="w-8 h-8 rounded-md bg-blue-500/20 flex items-center justify-center">
-              <ThumbsUp size={16} className="text-blue-500" />
+            <div className="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center">
+              <ThumbsUp size={16} className="text-white" />
             </div>
           </div>
-          <div className="text-2xl font-bold text-blue-500">{formatNumber(stats.likes.toString())}</div>
+          <div className="text-2xl font-bold text-white">{formatNumber(stats.likes.toString())}</div>
         </motion.div>
       </div>
 
@@ -242,22 +242,24 @@ const TrendingContent = () => {
                     {video.title}
                   </h3>
                   <p className="text-white/60 text-sm mb-4">{video.channelTitle}</p>
-                  <div className="flex items-center justify-between text-sm text-white/60">
-                    <div className="flex items-center gap-3">
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="text-blue-500">{formatDate(video.publishedAt)}</div>
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-white/60">
                       <span className="flex items-center gap-1">
-                        <Eye size={14} className="text-blue-500" />
-                        {formatNumber(video.viewCount)}
+                        <Eye size={14} className="text-white/60" />
+                        <span className="text-blue-500">{formatNumber(video.viewCount)}</span>
                       </span>
                       <span className="flex items-center gap-1">
-                        <ThumbsUp size={14} className="text-blue-500" />
-                        {formatNumber(video.likeCount)}
+                        <ThumbsUp size={14} className="text-white/60" />
+                        <span className="text-blue-500">{formatNumber(video.likeCount)}</span>
                       </span>
                       <span className="flex items-center gap-1">
-                        <MessageSquare size={14} className="text-blue-500" />
-                        {formatNumber(video.commentCount)}
+                        <MessageSquare size={14} className="text-white/60" />
+                        <span className="text-blue-500">{formatNumber(video.commentCount)}</span>
                       </span>
                     </div>
-                    <span className="text-blue-500">{formatDate(video.publishedAt)}</span>
                   </div>
                 </div>
               </a>
