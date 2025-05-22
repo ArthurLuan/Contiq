@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TrendingUp, Search, Filter, ArrowUp, BarChart2, MessageSquare, Share2, Eye, Globe, Youtube, RefreshCw } from 'lucide-react';
+import { TrendingUp, Search, Filter, ArrowUp, ArrowDown, BarChart2, MessageSquare, Share2, Eye, Globe, Youtube, RefreshCw, ThumbsUp } from 'lucide-react';
 import { useYouTubeTrending, YOUTUBE_CATEGORIES, COUNTRIES, YouTubeVideo } from '../../lib/youtube';
 import { motion } from 'framer-motion';
 
@@ -35,6 +35,18 @@ const TrendingContent = () => {
     }).format(date);
   };
 
+  const getTotalStats = () => {
+    return videos.reduce((acc, video) => {
+      return {
+        views: acc.views + parseInt(video.viewCount),
+        comments: acc.comments + parseInt(video.commentCount),
+        likes: acc.likes + parseInt(video.likeCount)
+      };
+    }, { views: 0, comments: 0, likes: 0 });
+  };
+
+  const stats = getTotalStats();
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -55,30 +67,95 @@ const TrendingContent = () => {
             <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60" />
           </div>
 
-          <select
-            value={selectedCountry}
-            onChange={(e) => setSelectedCountry(e.target.value)}
-            className="bg-lighter-gray/30 border border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white"
-          >
-            {COUNTRIES.map(country => (
-              <option key={country.code} value={country.code}>
-                {country.name}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              value={selectedCountry}
+              onChange={(e) => setSelectedCountry(e.target.value)}
+              className="appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
+            >
+              {COUNTRIES.map(country => (
+                <option key={country.code} value={country.code} className="bg-lighter-gray">
+                  {country.name}
+                </option>
+              ))}
+            </select>
+            <Globe size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 pointer-events-none" />
+          </div>
 
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="bg-lighter-gray/30 border border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white"
-          >
-            {YOUTUBE_CATEGORIES.map(category => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
+            >
+              {YOUTUBE_CATEGORIES.map(category => (
+                <option key={category.id} value={category.id} className="bg-lighter-gray">
+                  {category.name}
+                </option>
+              ))}
+            </select>
+            <Filter size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 pointer-events-none" />
+          </div>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <motion.div 
+          className="glass-card p-5 rounded-xl border border-white/10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-white/70 text-sm">Total Views</h3>
+            <div className="w-8 h-8 rounded-md bg-blue-500/20 flex items-center justify-center">
+              <Eye size={16} className="text-white" />
+            </div>
+          </div>
+          <div className="text-2xl font-bold mb-2">{formatNumber(stats.views.toString())}</div>
+          <div className="flex items-center gap-1 text-sm text-green-500">
+            <ArrowUp size={14} />
+            <span>12.5% from last period</span>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          className="glass-card p-5 rounded-xl border border-white/10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-white/70 text-sm">Total Comments</h3>
+            <div className="w-8 h-8 rounded-md bg-purple-500/20 flex items-center justify-center">
+              <MessageSquare size={16} className="text-white" />
+            </div>
+          </div>
+          <div className="text-2xl font-bold mb-2">{formatNumber(stats.comments.toString())}</div>
+          <div className="flex items-center gap-1 text-sm text-green-500">
+            <ArrowUp size={14} />
+            <span>8.2% from last period</span>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          className="glass-card p-5 rounded-xl border border-white/10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-white/70 text-sm">Total Likes</h3>
+            <div className="w-8 h-8 rounded-md bg-green-500/20 flex items-center justify-center">
+              <ThumbsUp size={16} className="text-white" />
+            </div>
+          </div>
+          <div className="text-2xl font-bold mb-2">{formatNumber(stats.likes.toString())}</div>
+          <div className="flex items-center gap-1 text-sm text-green-500">
+            <ArrowUp size={14} />
+            <span>15.3% from last period</span>
+          </div>
+        </motion.div>
       </div>
 
       <div className="flex gap-4 overflow-x-auto pb-2">
@@ -156,10 +233,14 @@ const TrendingContent = () => {
                   </h3>
                   <p className="text-white/60 text-sm mb-4">{video.channelTitle}</p>
                   <div className="flex items-center justify-between text-sm text-white/60">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
                       <span className="flex items-center gap-1">
                         <Eye size={14} />
                         {formatNumber(video.viewCount)}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <ThumbsUp size={14} />
+                        {formatNumber(video.likeCount)}
                       </span>
                       <span className="flex items-center gap-1">
                         <MessageSquare size={14} />
