@@ -74,10 +74,18 @@ export const COUNTRIES = [
   { code: 'MX', name: 'Mexico' }
 ];
 
+export const SORT_OPTIONS = [
+  { id: 'relevance', name: 'Relevance' },
+  { id: 'views', name: 'Most Views' },
+  { id: 'likes', name: 'Most Likes' },
+  { id: 'comments', name: 'Most Comments' }
+];
+
 export const useYouTubeTrending = (
   regionCode: string = 'US',
   categoryId: string = '0',
-  searchQuery: string = ''
+  searchQuery: string = '',
+  sortBy: string = 'relevance'
 ) => {
   const [videos, setVideos] = useState<YouTubeVideo[]>([]);
   const [loading, setLoading] = useState(false);
@@ -108,7 +116,7 @@ export const useYouTubeTrending = (
           throw new Error(data.error?.message || 'Failed to fetch trending videos');
         }
 
-        const formattedVideos = data.items
+        let formattedVideos = data.items
           .filter(video => 
             searchQuery === '' || 
             video.snippet.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -120,10 +128,23 @@ export const useYouTubeTrending = (
             thumbnailUrl: video.snippet.thumbnails.medium.url,
             channelTitle: video.snippet.channelTitle,
             publishedAt: video.snippet.publishedAt,
-            viewCount: video.statistics.viewCount,
-            likeCount: video.statistics.likeCount,
-            commentCount: video.statistics.commentCount
+            viewCount: video.statistics.viewCount || '0',
+            likeCount: video.statistics.likeCount || '0',
+            commentCount: video.statistics.commentCount || '0'
           }));
+
+        // Sort videos based on selected option
+        switch (sortBy) {
+          case 'views':
+            formattedVideos.sort((a, b) => parseInt(b.viewCount) - parseInt(a.viewCount));
+            break;
+          case 'likes':
+            formattedVideos.sort((a, b) => parseInt(b.likeCount) - parseInt(a.likeCount));
+            break;
+          case 'comments':
+            formattedVideos.sort((a, b) => parseInt(b.commentCount) - parseInt(a.commentCount));
+            break;
+        }
 
         setVideos(formattedVideos);
       } catch (err) {
@@ -134,7 +155,7 @@ export const useYouTubeTrending = (
     };
 
     fetchTrendingVideos();
-  }, [regionCode, categoryId, searchQuery]);
+  }, [regionCode, categoryId, searchQuery, sortBy]);
 
   return { videos, loading, error };
 };

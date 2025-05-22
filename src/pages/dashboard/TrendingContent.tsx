@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { TrendingUp, Search, Filter, ArrowUp, ArrowDown, BarChart2, MessageSquare, Share2, Eye, Globe, Youtube, RefreshCw, ThumbsUp } from 'lucide-react';
-import { useYouTubeTrending, YOUTUBE_CATEGORIES, COUNTRIES, YouTubeVideo } from '../../lib/youtube';
+import { TrendingUp, Search, Filter, ArrowUp, BarChart2, MessageSquare, Share2, Eye, Globe, Youtube, RefreshCw, ThumbsUp, SortAsc } from 'lucide-react';
+import { useYouTubeTrending, YOUTUBE_CATEGORIES, COUNTRIES, SORT_OPTIONS, YouTubeVideo } from '../../lib/youtube';
 import { motion } from 'framer-motion';
 
 const TrendingContent = () => {
@@ -8,15 +8,17 @@ const TrendingContent = () => {
   const [selectedCategory, setSelectedCategory] = useState('0');
   const [selectedCountry, setSelectedCountry] = useState('US');
   const [selectedPlatform, setSelectedPlatform] = useState('youtube');
+  const [sortBy, setSortBy] = useState('relevance');
 
   const { videos, loading, error } = useYouTubeTrending(
     selectedCountry,
     selectedCategory,
-    searchQuery
+    searchQuery,
+    sortBy
   );
 
   const formatNumber = (num: string) => {
-    const n = parseInt(num);
+    const n = parseInt(num || '0');
     if (n >= 1000000) {
       return `${(n / 1000000).toFixed(1)}M`;
     }
@@ -38,9 +40,9 @@ const TrendingContent = () => {
   const getTotalStats = () => {
     return videos.reduce((acc, video) => {
       return {
-        views: acc.views + parseInt(video.viewCount),
-        comments: acc.comments + parseInt(video.commentCount),
-        likes: acc.likes + parseInt(video.likeCount)
+        views: acc.views + parseInt(video.viewCount || '0'),
+        comments: acc.comments + parseInt(video.commentCount || '0'),
+        likes: acc.likes + parseInt(video.likeCount || '0')
       };
     }, { views: 0, comments: 0, likes: 0 });
   };
@@ -48,15 +50,15 @@ const TrendingContent = () => {
   const stats = getTotalStats();
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-8">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div>
           <h1 className="text-2xl font-bold mb-1">Trending Content</h1>
           <p className="text-white/60">Discover trending topics and content ideas</p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="relative flex-1 sm:flex-initial">
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="relative flex-1 lg:flex-initial min-w-[200px]">
             <input
               type="text"
               value={searchQuery}
@@ -67,11 +69,11 @@ const TrendingContent = () => {
             <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60" />
           </div>
 
-          <div className="relative">
+          <div className="relative min-w-[160px]">
             <select
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
-              className="appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
+              className="w-full appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
             >
               {COUNTRIES.map(country => (
                 <option key={country.code} value={country.code} className="bg-lighter-gray">
@@ -82,11 +84,11 @@ const TrendingContent = () => {
             <Globe size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 pointer-events-none" />
           </div>
 
-          <div className="relative">
+          <div className="relative min-w-[160px]">
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
+              className="w-full appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
             >
               {YOUTUBE_CATEGORIES.map(category => (
                 <option key={category.id} value={category.id} className="bg-lighter-gray">
@@ -95,6 +97,21 @@ const TrendingContent = () => {
               ))}
             </select>
             <Filter size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 pointer-events-none" />
+          </div>
+
+          <div className="relative min-w-[160px]">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="w-full appearance-none bg-lighter-gray/30 border border-white/10 rounded-lg pl-4 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-neon-red/50 text-white cursor-pointer"
+            >
+              {SORT_OPTIONS.map(option => (
+                <option key={option.id} value={option.id} className="bg-lighter-gray">
+                  {option.name}
+                </option>
+              ))}
+            </select>
+            <SortAsc size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60 pointer-events-none" />
           </div>
         </div>
       </div>
@@ -112,11 +129,7 @@ const TrendingContent = () => {
               <Eye size={16} className="text-white" />
             </div>
           </div>
-          <div className="text-2xl font-bold mb-2">{formatNumber(stats.views.toString())}</div>
-          <div className="flex items-center gap-1 text-sm text-green-500">
-            <ArrowUp size={14} />
-            <span>12.5% from last period</span>
-          </div>
+          <div className="text-2xl font-bold">{formatNumber(stats.views.toString())}</div>
         </motion.div>
 
         <motion.div 
@@ -131,11 +144,7 @@ const TrendingContent = () => {
               <MessageSquare size={16} className="text-white" />
             </div>
           </div>
-          <div className="text-2xl font-bold mb-2">{formatNumber(stats.comments.toString())}</div>
-          <div className="flex items-center gap-1 text-sm text-green-500">
-            <ArrowUp size={14} />
-            <span>8.2% from last period</span>
-          </div>
+          <div className="text-2xl font-bold">{formatNumber(stats.comments.toString())}</div>
         </motion.div>
 
         <motion.div 
@@ -150,11 +159,7 @@ const TrendingContent = () => {
               <ThumbsUp size={16} className="text-white" />
             </div>
           </div>
-          <div className="text-2xl font-bold mb-2">{formatNumber(stats.likes.toString())}</div>
-          <div className="flex items-center gap-1 text-sm text-green-500">
-            <ArrowUp size={14} />
-            <span>15.3% from last period</span>
-          </div>
+          <div className="text-2xl font-bold">{formatNumber(stats.likes.toString())}</div>
         </motion.div>
       </div>
 
@@ -228,7 +233,7 @@ const TrendingContent = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
                 <div className="p-4">
-                  <h3 className="font-medium mb-2 line-clamp-2 group-hover:text-neon-red transition-colors">
+                  <h3 className="text-sm font-medium mb-2 line-clamp-2 group-hover:text-neon-red transition-colors">
                     {video.title}
                   </h3>
                   <p className="text-white/60 text-sm mb-4">{video.channelTitle}</p>
