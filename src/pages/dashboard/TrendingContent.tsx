@@ -244,20 +244,20 @@ const TrendingContent = () => {
                   <p className="text-white/60 text-sm mb-4">{video.channelTitle}</p>
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center justify-between text-sm">
-                      <div className="text-blue-500">{formatDate(video.publishedAt)}</div>
+                      <div className="text-red-500">{formatDate(video.publishedAt)}</div>
                     </div>
                     <div className="flex items-center gap-4 text-sm text-white/60">
                       <span className="flex items-center gap-1">
                         <Eye size={14} className="text-white/60" />
-                        <span className="text-blue-500">{formatNumber(video.viewCount)}</span>
+                        <span className="text-red-500">{formatNumber(video.viewCount)}</span>
                       </span>
                       <span className="flex items-center gap-1">
                         <ThumbsUp size={14} className="text-white/60" />
-                        <span className="text-blue-500">{formatNumber(video.likeCount)}</span>
+                        <span className="text-red-500">{formatNumber(video.likeCount)}</span>
                       </span>
                       <span className="flex items-center gap-1">
                         <MessageSquare size={14} className="text-white/60" />
-                        <span className="text-blue-500">{formatNumber(video.commentCount)}</span>
+                        <span className="text-red-500">{formatNumber(video.commentCount)}</span>
                       </span>
                     </div>
                   </div>
