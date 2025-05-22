@@ -291,3 +291,5 @@ const TrendingContent = () => {
 };
 
 export default TrendingContent;
+
+export default TrendingContent
