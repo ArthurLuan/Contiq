@@ -159,8 +159,8 @@ const TrendingContent = () => {
         >
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-white/70 text-sm">Total Views</h3>
-            <div className="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center">
-              <Eye size={16} className="text-white" />
+            <div className="w-8 h-8 rounded-md bg-blue-500/20 flex items-center justify-center">
+              <Eye size={16} className="text-blue-500" />
             </div>
           </div>
           <div className="text-2xl font-bold text-white">{formatNumber(stats.views.toString())}</div>
@@ -174,8 +174,8 @@ const TrendingContent = () => {
         >
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-white/70 text-sm">Total Comments</h3>
-            <div className="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center">
-              <MessageSquare size={16} className="text-white" />
+            <div className="w-8 h-8 rounded-md bg-purple-500/20 flex items-center justify-center">
+              <MessageSquare size={16} className="text-purple-500" />
             </div>
           </div>
           <div className="text-2xl font-bold text-white">{formatNumber(stats.comments.toString())}</div>
@@ -189,8 +189,8 @@ const TrendingContent = () => {
         >
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-white/70 text-sm">Total Likes</h3>
-            <div className="w-8 h-8 rounded-md bg-white/10 flex items-center justify-center">
-              <ThumbsUp size={16} className="text-white" />
+            <div className="w-8 h-8 rounded-md bg-green-500/20 flex items-center justify-center">
+              <ThumbsUp size={16} className="text-green-500" />
             </div>
           </div>
           <div className="text-2xl font-bold text-white">{formatNumber(stats.likes.toString())}</div>
