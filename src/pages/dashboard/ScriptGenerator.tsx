@@ -5,6 +5,8 @@ import {
   MessageSquare, ThumbsUp, Share2, Eye, Clock, Target,
   Upload, X, File, ChevronDown, Plus, Link as LinkIcon
 } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
+import { supabase } from '../../lib/supabase';
 
 interface ExampleInput {
   id: string;
@@ -51,6 +53,10 @@ const ScriptGenerator = () => {
   const [inputTitle, setInputTitle] = useState('');
   const [generatedScript, setGeneratedScript] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [publishLoading, setPublishLoading] = useState(false);
+  const [publishError, setPublishError] = useState('');
+  const [publishSuccess, setPublishSuccess] = useState(false);
+  const { user } = useAuth();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const toneDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -128,6 +134,35 @@ const ScriptGenerator = () => {
       console.error('Error generating script:', error);
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handlePublishScript = async () => {
+    if (!generatedScript || !scriptTopic || !selectedPlatform || !selectedTone || !selectedContentStyle) {
+      return;
+    }
+
+    setPublishLoading(true);
+    setPublishError('');
+    setPublishSuccess(false);
+
+    try {
+      const { error } = await supabase.from('scripts').insert({
+        user_id: user?.id,
+        title: scriptTopic.split('\n')[0] || 'Untitled Script',
+        content: generatedScript,
+        platform: selectedPlatform,
+        video_length: videoLength,
+        tone: selectedTone,
+        content_style: selectedContentStyle
+      });
+
+      if (error) throw error;
+      setPublishSuccess(true);
+    } catch (error: any) {
+      setPublishError(error.message);
+    } finally {
+      setPublishLoading(false);
     }
   };
 
@@ -379,6 +414,37 @@ const ScriptGenerator = () => {
               <FileText size={20} className="text-neon-red" />
               Generated Script
             </h2>
+            
+            {generatedScript && (
+              <div className="flex items-center gap-3">
+                {publishSuccess && (
+                  <span className="text-green-500 text-sm flex items-center gap-1">
+                    <CheckCircle size={16} />
+                    Published successfully
+                  </span>
+                )}
+                {publishError && (
+                  <span className="text-red-500 text-sm">{publishError}</span>
+                )}
+                <button
+                  onClick={handlePublishScript}
+                  disabled={publishLoading}
+                  className="btn-primary px-4 py-2 flex items-center gap-2"
+                >
+                  {publishLoading ? (
+                    <>
+                      <RefreshCw size={16} className="animate-spin" />
+                      Publishing...
+                    </>
+                  ) : (
+                    <>
+                      <Share2 size={16} />
+                      Publish
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
           </div>
 
           {generatedScript ? (
