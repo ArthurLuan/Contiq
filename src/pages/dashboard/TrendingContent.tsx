@@ -238,26 +238,30 @@ const TrendingContent = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
                 <div className="p-4">
-                  <h3 className="text-sm font-medium mb-2 line-clamp-2 group-hover:text-neon-red transition-colors">
+                  <h3 className="text-base font-medium mb-3 line-clamp-2 group-hover:text-neon-red transition-colors">
                     {video.title}
                   </h3>
-                  <p className="text-white/60 text-sm mb-4">{video.channelTitle}</p>
-                  <div className="flex items-center justify-between text-sm text-white/60">
-                    <div className="flex items-center gap-3">
-                      <span className="flex items-center gap-1">
-                        <Eye size={14} />
-                        {formatNumber(video.viewCount)}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <ThumbsUp size={14} />
-                        {formatNumber(video.likeCount)}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <MessageSquare size={14} />
-                        {formatNumber(video.commentCount)}
-                      </span>
-                    </div>
-                    <span>{formatDate(video.publishedAt)}</span>
+                  <p className="text-white/60 text-sm mb-6">{video.channelTitle}</p>
+                  
+                  {/* Centered stats */}
+                  <div className="flex items-center justify-center gap-6 mb-4">
+                    <span className="flex flex-col items-center gap-1">
+                      <Eye size={16} className="text-white/60" />
+                      <span className="text-sm">{formatNumber(video.viewCount)}</span>
+                    </span>
+                    <span className="flex flex-col items-center gap-1">
+                      <ThumbsUp size={16} className="text-white/60" />
+                      <span className="text-sm">{formatNumber(video.likeCount)}</span>
+                    </span>
+                    <span className="flex flex-col items-center gap-1">
+                      <MessageSquare size={16} className="text-white/60" />
+                      <span className="text-sm">{formatNumber(video.commentCount)}</span>
+                    </span>
+                  </div>
+                  
+                  {/* Date in bottom left */}
+                  <div className="text-sm text-blue-400">
+                    {formatDate(video.publishedAt)}
                   </div>
                 </div>
               </a>
@@ -265,6 +269,23 @@ const TrendingContent = () => {
           ))}
         </div>
       )}
+
+      {/* Improved Select Lists Styling */}
+      <style jsx global>{`
+        select option {
+          background-color: rgb(var(--color-lighter-gray));
+          color: white;
+          padding: 8px 12px;
+        }
+        
+        select option:hover {
+          background-color: rgb(var(--color-neon-red) / 0.1);
+        }
+        
+        select:focus option:checked {
+          background-color: rgb(var(--color-neon-red) / 0.2);
+        }
+      `}</style>
     </div>
   );
 };
