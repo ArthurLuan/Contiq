@@ -117,22 +117,20 @@ const ScriptGenerator = () => {
         references: exampleInputs
       };
 
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-script`, {
+      const response = await fetch('https://n8n-fc4c0o0swcokkww040kcswoc.erickto.dev/webhook-test/90937f5c-cdd2-4e0a-b41f-3d09cd9ff642', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to generate script');
+        throw new Error('Failed to generate script');
       }
 
       const data = await response.json();
-      setGeneratedScript(data.script);
+      setGeneratedScript(data.script || data.message || JSON.stringify(data));
     } catch (error: any) {
       console.error('Error generating script:', error);
       setPublishError(error.message || 'Failed to generate script. Please try again.');
@@ -142,7 +140,7 @@ const ScriptGenerator = () => {
   };
 
   const handlePublishScript = async () => {
-    if (!generatedScript || !scriptTopic || !selectedPlatform || !selectedTone || !selectedContentStyle) {
+    if (!generatedScript || !scriptTopic || !selectedPlatform || !selectedTone || !selectedContentStyle || !user?.id) {
       return;
     }
 
@@ -151,8 +149,28 @@ const ScriptGenerator = () => {
     setPublishSuccess(false);
 
     try {
+      // First, ensure the user has a profile
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', user.id)
+        .single();
+
+      if (profileError || !profile) {
+        // Create profile if it doesn't exist
+        const { error: createProfileError } = await supabase
+          .from('profiles')
+          .insert({
+            id: user.id,
+            email: user.email,
+          });
+
+        if (createProfileError) throw createProfileError;
+      }
+
+      // Now insert the script
       const { error } = await supabase.from('scripts').insert({
-        user_id: user?.id,
+        user_id: user.id,
         title: scriptTopic.split('\n')[0] || 'Untitled Script',
         content: generatedScript,
         platform: selectedPlatform,
